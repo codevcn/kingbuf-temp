@@ -1,5 +1,5 @@
 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <main id="main-section">
     <section id="booking-details">
@@ -7,21 +7,21 @@
 
         <section class="details">
             <h3 class="booking-id">
-                Đơn #<span>${booking.ReservationID}</span> -
+                Đơn #<span>${booking.reservationID}</span> -
                 <c:choose>
-                    <c:when test="${booking.Status eq 'Pending'}">
+                    <c:when test="${booking.status == 'Pending'}">
                         <span class="status pending" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Đơn hiện chưa được xử lý">Chưa được xử lý</span>
                     </c:when>
-                    <c:when test="${booking.Status eq 'Approved'}">
+                    <c:when test="${booking.status == 'Approved'}">
                         <span class="status approved" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Đơn đã được xử lý">Đã duyệt</span>
                     </c:when>
-                    <c:when test="${booking.Status eq 'Completed'}">
+                    <c:when test="${booking.status == 'Completed'}">
                         <span class="status arrived" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Khách đã đến">Khách đã đến</span>
                     </c:when>
-                    <c:when test="${booking.Status eq 'Arrived'}">
+                    <c:when test="${booking.status == 'Arrived'}">
                         <span class="status completed" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Đơn đã được xử lý">Đã hoàn thành</span>
                     </c:when>
-                    <c:when test="${booking.Status eq 'Cancelled'}">
+                    <c:when test="${booking.status == 'Cancelled'}">
                         <span class="status cancelled" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Đơn đã bị hủy">Đã hủy</span>
                     </c:when>
                     <c:otherwise>
@@ -30,16 +30,16 @@
                 </c:choose>
             </h3>
 
-            <form id="update-booking-form" data-kb-booking-id="${booking.ReservationID}">
+            <form id="update-booking-form" data-kb-booking-id="${booking.reservationID}">
                 <div class="form-groups">
                     <div class="form-group full-name">
                         <label for="fullname-input">Họ và tên người đặt</label>
-                        <input value="${booking.Cus_FullName}" id="fullname-input" name="full-name" <c:if test="${booking.Status == 'Completed'}">disabled</c:if>>
-                        <div class="message"></div>
-                    </div>
-                    <div class="form-group phone">
-                        <label for="phone-input">Số điện thoại người đặt</label>
-                        <input value="${booking.Cus_Phone}" id="phone-input" name="phone" disabled>
+                        <input value="${booking.cusFullName}" id="fullname-input" name="full-name" <c:if test="${booking.status == 'Completed'}">disabled</c:if>>
+                            <div class="message"></div>
+                        </div>
+                        <div class="form-group phone">
+                            <label for="phone-input">Số điện thoại người đặt</label>
+                            <input value="${booking.cusPhone}" id="phone-input" name="phone" disabled>
                         <div class="message"></div>
                     </div>
                     <div class="form-group date">
@@ -47,74 +47,73 @@
                         <!-- Sử dụng JSTL để định dạng ngày -->
                         <input type="date" id="date-input" name="date" 
                                value="${booking.arrivalTime}" 
-                        <c:if test="${booking.Status == 'Completed'}">disabled</c:if>>
-                        <div class="message"></div>
-                    </div>
-                    <div class="form-group time">
-                        <label for="time-input">Giờ đến</label>
-                        <!-- Sử dụng JSTL để định dạng giờ -->
-                        <input type="time" id="time-input" name="time" 
-                               value="${booking.arrivalTime}" 
-                        <c:if test="${booking.Status == 'Completed'}">disabled</c:if>>
-                        <div class="message"></div>
-                    </div>
-                    <div class="form-group note">
-                        <label for="note-input">Ghi chú</label>
-                        <textarea rows="5" id="note-input" name="note" <c:if test="${booking.Status == 'Completed'}">disabled</c:if>>${booking.Note}</textarea>
-                        <div class="message"></div>
-                    </div>
-                    <div class="form-group created-at">
-                        <label>Ngày tạo đơn</label>
-                        <p>${booking.CreatedAt}</p>
+                               <c:if test="${booking.status == 'Completed'}">disabled</c:if>>
+                               <div class="message"></div>
+                        </div>
+                        <div class="form-group time">
+                            <label for="time-input">Giờ đến</label>
+                            <!-- Sử dụng JSTL để định dạng giờ -->
+                            <input type="time" id="time-input" name="time" 
+                                   value="${booking.arrivalTime}" 
+                            <c:if test="${booking.status == 'Completed'}">disabled</c:if>>
+                            <div class="message"></div>
+                        </div>
+                        <div class="form-group note">
+                            <label for="note-input">Ghi chú</label>
+                            <textarea rows="5" id="note-input" name="note" <c:if test="${booking.status == 'Completed'}">disabled</c:if>>${booking.note}</textarea>
+                            <div class="message"></div>
+                        </div>
+                        <div class="form-group created-at">
+                            <label>Ngày tạo đơn</label>
+                            <p>${booking.createdAt}</p>
                     </div>
                     <div class="form-group adults-count">
                         <label for="adults-count-input">Số người lớn</label>
-                        <input value="${booking.NumAdults}" id="adults-count-input" name="adults-count" <c:if test="${booking.Status == 'Completed'}">disabled</c:if>>
-                        <div class="message"></div>
-                    </div>
-                    <div class="form-group children-count">
-                        <label for="children-count-input">Số trẻ em</label>
-                        <input value="${booking.NumChildren}" id="children-count-input" name="children-count" <c:if test="${booking.Status == 'Completed'}">disabled</c:if>>
-                        <div class="message"></div>
-                    </div>
-                    <div class="form-group status">
-                        <label>Trạng thái</label>
-                        <p>
-                        <c:choose>
-                            <c:when test="${booking.Status == 'Pending'}">Chưa được xử lý</c:when>
-                            <c:when test="${booking.Status == 'Approved'}">Đã duyệt</c:when>
-                            <c:when test="${booking.Status == 'Cancelled'}">Đã hủy</c:when>
-                            <c:when test="${booking.Status == 'Completed'}">Đã hoàn thành</c:when>
-                            <c:otherwise>Đã từ chối</c:otherwise>
-                        </c:choose>
+                        <input value="${booking.numAdults}" id="adults-count-input" name="adults-count" <c:if test="${booking.status == 'Completed'}">disabled</c:if>>
+                            <div class="message"></div>
+                        </div>
+                        <div class="form-group children-count">
+                            <label for="children-count-input">Số trẻ em</label>
+                            <input value="${booking.numChildren}" id="children-count-input" name="children-count" <c:if test="${booking.status == 'Completed'}">disabled</c:if>>
+                            <div class="message"></div>
+                        </div>
+                        <div class="form-group status">
+                            <label>Trạng thái</label>
+                            <p>
+                            <c:choose>
+                                <c:when test="${booking.status == 'Pending'}">Chưa được xử lý</c:when>
+                                <c:when test="${booking.status == 'Approved'}">Đã duyệt</c:when>
+                                <c:when test="${booking.status == 'Cancelled'}">Đã hủy</c:when>
+                                <c:when test="${booking.status == 'Completed'}">Đã hoàn thành</c:when>
+                                <c:otherwise>Đã từ chối</c:otherwise>
+                            </c:choose>
                         </p>
                     </div>
                 </div>
-                <div class="form-group assigned-tables">
-                    <label>Các bàn đã gán</label>
-                    <div class="table-tags">
-                        <c:forEach var="table" items="${assignedTables}">
-                            <button type="button" class="btn table-tag assigned" data-kb-table-id="${table.TableID}">
-                                ${table.TableName}
-                                <i class="fa-solid fa-xmark remove-assigned-table-btn"></i>
-                            </button>
-                        </c:forEach>
+                <c:if test="${booking.status eq 'Approved'}">
+                    <div class="form-groups">
+                        <div class="form-group tables-assigned">
+                            <label>Danh sách bàn được gán cho đơn</label>
+                            <p>
+                                <c:forEach var="table" items="${booking.tablesList}" varStatus="status">
+                                    <span>${table.tableNumber}<c:if test="${!status.last}">,</c:if></span>
+                                </c:forEach> 
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group available-tables">
-                    <label>Các bàn trống</label>
-                    <div class="table-tags">
-                        <c:forEach var="table" items="${availableTables}">
-                            <button type="button" class="btn table-tag available" data-kb-table-id="${table.TableID}">
-                                ${table.TableName}
-                                <i class="fa-solid fa-plus add-available-table-btn"></i>
-                            </button>
-                        </c:forEach>
+                </c:if>
+                <c:if test="${booking.status ne 'Completed'}">
+                    <div class="btns">
+                        <span></span>
+                        <button type="submit" class="submit-btn">
+                            <span>Cập nhật đơn</span>
+                            <i class="bi bi-arrow-repeat"></i>
+                        </button>
                     </div>
-                </div>
+                </c:if>
             </form>
 
-            <c:if test="${booking.Status == 'Approved'}">
+            <c:if test="${booking.status == 'Approved'}">
                 <section id="update-assign-tables" data-kb-tab-type="update-assign-tables">
                     <div class="update-assign-tables-title">
                         <i class="bi bi-list-columns"></i>
@@ -177,29 +176,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="table" items="${emptyTables}">
-                                    <tr class="${table.Status == 'Maintenance' ? 'maintained' : ''}">
-                                        <td>${table.TableNumber}</td>
-                                        <td>${table.Capacity}</td>
-                                        <td>${table.Location}</td>
-                                    <c:if test="${table.Status == 'Maintenance'}">
-                                        <td>Đang bảo trì</td>
-                                    </c:if>
-                                    <c:if test="${table.Status != 'Maintenance'}">
-                                        <td>Còn trống</td>
-                                    </c:if>
-                                    <c:if test="${table.Status != 'Maintenance'}">
-                                        <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" ${booking.TablesList.contains(table.TableNumber) ? 'checked' : ''} type="checkbox" value="${table.TableID}" id="table-pick-id-${table.TableID}">
-                                            </div>
-                                        </td>
-                                    </c:if>
-                                    <c:if test="${table.Status == 'Maintenance'}">
-                                        <td></td>
-                                    </c:if>
-                                    </tr>
-                                </c:forEach>
+                                    <c:forEach var="table" items="${emptyTables}">
+                                        <tr class="${table.status == 'Maintenance' ? 'maintained' : ''}">
+                                            <td>${table.tableNumber}</td>
+                                            <td>${table.capacity}</td>
+                                            <td>${table.location}</td>
+                                            <c:if test="${table.status == 'Maintenance'}">
+                                                <td>Đang bảo trì</td>
+                                            </c:if>
+                                            <c:if test="${table.status != 'Maintenance'}">
+                                                <td>Còn trống</td>
+                                            </c:if>
+                                            <c:if test="${table.status != 'Maintenance'}">
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" ${booking.tablesList.contains(table.tableNumber) ? 'checked' : ''} type="checkbox" value="${table.tableID}" id="table-pick-id-${table.tableID}">
+                                                    </div>
+                                                </td>
+                                            </c:if>
+                                            <c:if test="${table.status == 'Maintenance'}">
+                                                <td></td>
+                                            </c:if>
+                                        </tr>
+                                    </c:forEach>
                                 </tbody>
                             </table>
 
@@ -229,11 +228,11 @@
         <h3 class="top-title">Xử lý đơn</h3>
 
         <c:choose>
-            <c:when test="${booking.Status == 'Approved' || booking.Status == 'Completed'}">
+            <c:when test="${booking.status == 'Approved' || booking.status == 'Completed'}">
                 <section class="processed-booking">
-                    <c:if test="${not empty booking.TablesList}">
+                    <c:if test="${not empty booking.tablesList}">
                         <c:choose>
-                            <c:when test="${booking.Status == 'Approved'}">
+                            <c:when test="${booking.status == 'Approved'}">
                                 <div class="notice approved">
                                     <i class="bi bi-check2-circle"></i>
                                     <span>Đơn đã được xử lý</span>
@@ -249,18 +248,18 @@
                         <div class="form-group">
                             <label>Danh sách bàn được gán cho đơn</label>
                             <p>
-                            <c:forEach var="table" items="${booking.TablesList}" varStatus="status">
-                                <span>${table.TableNumber}<c:if test="${status.index < booking.TablesList.size() - 1}">,</c:if></span>
-                            </c:forEach>
+                                <c:forEach var="table" items="${booking.tablesList}" varStatus="status">
+                                    <span>${table.tableNumber}<c:if test="${status.index < booking.tablesList.size() - 1}">,</c:if></span>
+                                </c:forEach>
                             </p>
                         </div>
                     </c:if>
                 </section>
             </c:when>
 
-            <c:when test="${booking.Status == 'Rejected'}">
+            <c:when test="${booking.status == 'Rejected'}">
                 <section class="processed-booking">
-                    <c:if test="${not empty booking.Reason}">
+                    <c:if test="${not empty booking.reason}">
                         <div class="notice rejected">
                             <i class="bi bi-x-lg"></i>
                             <span>Đơn đã bị từ chối</span>
@@ -268,16 +267,16 @@
                         <div class="form-group">
                             <label>Lý do từ chối đơn</label>
                             <p>
-                                ${booking.Reason}
+                                ${booking.reason}
                             </p>
                         </div>
                     </c:if>
                 </section>
             </c:when>
 
-            <c:when test="${booking.Status == 'Cancelled'}">
+            <c:when test="${booking.status == 'Cancelled'}">
                 <section class="processed-booking">
-                    <c:if test="${not empty booking.Reason}">
+                    <c:if test="${not empty booking.reason}">
                         <div class="notice cancelled">
                             <i class="bi bi-trash"></i>
                             <span>Đơn đã bị hủy</span>
@@ -285,7 +284,7 @@
                         <div class="form-group">
                             <label>Lý do hủy đơn</label>
                             <p>
-                                ${booking.Reason}
+                                ${booking.reason}
                             </p>
                         </div>
                     </c:if>
@@ -402,21 +401,21 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <c:forEach var="table" items="${emptyTables}">
-                                                <tr class="${table.Status == 'Maintenance' ? 'maintained' : ''}">
-                                                    <td>${table.TableNumber}</td>
-                                                    <td>${table.Capacity}</td>
-                                                    <td>${table.Location}</td>
-                                                    <td>${table.Status == 'Maintenance' ? 'Đang bảo trì' : 'Khả dụng'}</td>
-                                                    <td>
-                                                <c:if test="${table.Status != 'Maintenance'}">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="${table.TableID}" id="table-pick-id-${table.TableID}">
-                                                    </div>
-                                                </c:if>
-                                                </td>
-                                                </tr>
-                                            </c:forEach>
+                                                <c:forEach var="table" items="${emptyTables}">
+                                                    <tr class="${table.status == 'Maintenance' ? 'maintained' : ''}">
+                                                        <td>${table.tableNumber}</td>
+                                                        <td>${table.capacity}</td>
+                                                        <td>${table.location}</td>
+                                                        <td>${table.status == 'Maintenance' ? 'Đang bảo trì' : 'Khả dụng'}</td>
+                                                        <td>
+                                                            <c:if test="${table.status != 'Maintenance'}">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" value="${table.tableID}" id="table-pick-id-${table.tableID}">
+                                                                </div>
+                                                            </c:if>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>

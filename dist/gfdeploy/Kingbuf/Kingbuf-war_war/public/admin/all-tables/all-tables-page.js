@@ -108,15 +108,16 @@ const deleteTable = (e) => {
 
 const showUpdateTableModal = (e) => {
    const formData = JSON.parse(e.currentTarget.getAttribute("data-kb-table-data"))
+   console.log('>>> form data >>>', formData)
 
-   document.getElementById("add-table-table-id-input").value = formData.TableID
-   document.getElementById("update-table-table-number-input").value = formData.TableNumber
-   document.getElementById("update-table-capacity-input").value = formData.Capacity
-   document.getElementById("update-table-location-input").value = formData.Location
-   document.getElementById("update-table-status-input").value = formData.Status
+   document.getElementById("add-table-table-id-input").value = formData.tableID
+   document.getElementById("update-table-table-number-input").value = formData.tableNumber
+   document.getElementById("update-table-capacity-input").value = formData.capacity
+   document.getElementById("update-table-location-input").value = formData.location
+   document.getElementById("update-table-status-input").value = formData.status
 
    document.querySelector("#table-status-select .dropdown-toggle").textContent =
-      formData.Status === "Available" ? "Còn trống" : "Đang bảo trì"
+      formData.status === "Available" ? "Còn trống" : "Đang bảo trì"
 
    const confirmBooking = new bootstrap.Modal("#update-table-modal")
    confirmBooking.show()

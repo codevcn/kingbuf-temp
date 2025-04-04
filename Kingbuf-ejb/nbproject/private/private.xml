@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/D-Documents/SHCOOL-Teamwork/KT-TKPM/Kingbuf/Kingbuf-ejb/src/java/com/example/dto/ReservationDTO.java</file>
-            <file>file:/D:/D-Documents/SHCOOL-Teamwork/KT-TKPM/Kingbuf/Kingbuf-ejb/src/java/com/example/ejb/BookingHistoryService.java</file>
-            <file>file:/D:/D-Documents/SHCOOL-Teamwork/KT-TKPM/Kingbuf/Kingbuf-ejb/src/java/com/example/ejb/ReservationService.java</file>
-            <file>file:/D:/D-Documents/SHCOOL-Teamwork/KT-TKPM/Kingbuf/Kingbuf-ejb/src/java/com/example/entity/Reservation.java</file>
+            <file>file:/D:/D-Documents/SHCOOL-Teamwork/KT-TKPM/Kingbuf/Kingbuf-ejb/src/java/com/example/ejb/BookingsService.java</file>
+            <file>file:/D:/D-Documents/SHCOOL-Teamwork/KT-TKPM/Kingbuf/Kingbuf-ejb/src/java/com/example/dto/Table.java</file>
+            <file>file:/D:/D-Documents/SHCOOL-Teamwork/KT-TKPM/Kingbuf/Kingbuf-ejb/src/java/com/example/dto/Booking.java</file>
         </group>
     </open-files>
 </project-private>

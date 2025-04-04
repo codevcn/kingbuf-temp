@@ -1,18 +1,18 @@
 <header>
-  <a class="app-title" href="/">Nhà Hàng KingBuf</a>
+  <a class="app-title" href="reservation">Nhà Hàng KingBuf</a>
   <nav>
     <% Boolean isAdmin = (Boolean) request.getAttribute("isAdmin"); %>
     
     <% if (isAdmin != null && isAdmin) { %>
     <ul>
       <li>
-        <a href="/admin/all-tables" class="nav-item">
+        <a href="admin/all-tables" class="nav-item">
           <i class="bi bi-border-style"></i>
           <span>Danh sách bàn</span>
         </a>
       </li>
       <li>
-        <a href="/admin/all-bookings" class="nav-item">
+        <a href="admin/all-bookings" class="nav-item">
           <i class="bi bi-list-columns-reverse"></i>
           <span>Danh sách đơn đặt bàn</span>
         </a>
@@ -27,7 +27,7 @@
     <% } else { %>
     <ul>
       <li>
-        <a href="/#booking" class="nav-item">
+        <a href="#booking" class="nav-item">
           <i class="bi bi-journal-check"></i>
           <span>Đặt Chỗ</span>
         </a>
@@ -39,7 +39,7 @@
         </a>
       </li>
       <li>
-        <a href="/bookings-history" class="nav-item">
+        <a href="booking-history" class="nav-item">
           <i class="bi bi-search"></i>
           <span>Tra cứu đơn đặt</span>
         </a>

@@ -75,22 +75,22 @@ const arrivedCustomer = (e) => {
       })
 }
 
-// const setArrivedStatus = (e) => {
-//    const submitBtn = e.currentTarget
-//    const backupContent = e.target.innerHTML
-//    submitBtn.innerHTML = createLoading()
-//    bookingService
-//       .updateBooking(getBookingId(submitBtn), { Reason: "Khách không đến" })
-//       .then(() => {
-//          reloadPage()
-//       })
-//       .catch((error) => {
-//          toaster.error(error.message)
-//       })
-//       .finally(() => {
-//          submitBtn.innerHTML = backupContent
-//       })
-// }
+const setArrivedStatus = (e) => {
+   const submitBtn = e.currentTarget
+   const backupContent = e.target.innerHTML
+   submitBtn.innerHTML = createLoading()
+   bookingService
+      .updateBooking(getBookingId(submitBtn), { Reason: "Khách không đến" })
+      .then(() => {
+         reloadPage()
+      })
+      .catch((error) => {
+         toaster.error(error.message)
+      })
+      .finally(() => {
+         submitBtn.innerHTML = backupContent
+      })
+}
 
 const showConfirmCancelBookingModal = (e) => {
    const bookingData = JSON.parse(e.currentTarget.getAttribute("data-kb-booking-data"))
@@ -243,9 +243,15 @@ const init = () => {
    }
 
    document.getElementById("filter-bookings-form").addEventListener("submit", filterBookings)
-   // document.getElementById("complete-booking-btn").addEventListener("click", completeBooking)
-   // document.getElementById("set-arrived-cus-btn").addEventListener("click", setArrivedStatus)
-   // document.getElementById("cancel-booking-btn").addEventListener("click", cancelBooking)
+   document
+      .getElementById("complete-booking-btn")
+      .addEventListener("click", showConfirmCompleteBookingModal)
+   document
+      .getElementById("set-arrived-cus-btn")
+      .addEventListener("click", showConfirmArrivedCusModal)
+   document
+      .getElementById("cancel-booking-btn")
+      .addEventListener("click", showConfirmCancelBookingModal)
 }
 init()
 document.addEventListener("DOMContentLoaded", function () {

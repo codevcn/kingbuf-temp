@@ -5,7 +5,7 @@
 
   <c:if test="${isAdmin == null or not isAdmin}">
     <p>
-      <a href="/admin/login" id="login_with_admin" style="text-decoration: none; color: #eab308;">
+      <a href="admin/login" id="login_with_admin" style="text-decoration: none; color: #eab308;">
         Đăng nhập với admin
       </a>
     </p>

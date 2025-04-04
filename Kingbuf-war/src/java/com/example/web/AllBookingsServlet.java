@@ -1,7 +1,9 @@
 package com.example.web;
 
+import com.example.dto.Booking;
 import com.example.dto.ErrorResponse;
 import com.example.dto.ReservationRequest;
+import com.example.ejb.BookingsService;
 import com.example.ejb.ReservationService;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/admin/all-bookings")
 public class AllBookingsServlet extends HttpServlet {
@@ -21,6 +25,8 @@ public class AllBookingsServlet extends HttpServlet {
 
     @EJB
     private ReservationService reservationService;
+    @EJB
+    private BookingsService bookingsService;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,8 +37,18 @@ public class AllBookingsServlet extends HttpServlet {
             isAdmin = false;
         }
 
-        request.setAttribute("isAdmin", isAdmin);
-        request.getRequestDispatcher("/WEB-INF/admin/all-bookings/all-bookings-page.jsp")
-                .forward(request, response);
+        try {
+            List<Booking> bookings = this.bookingsService.getAllBookings();
+            request.setAttribute("isAdmin", true);
+            request.setAttribute("bookings", bookings);
+            request.getRequestDispatcher("/WEB-INF/admin/all-bookings/all-bookings-page.jsp")
+                    .forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("isAdmin", isAdmin);
+            request.setAttribute("bookings", new ArrayList());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
+            request.getRequestDispatcher("/WEB-INF/admin/all-bookings/all-bookings-page.jsp")
+                    .forward(request, response);
+        }
     }
 }

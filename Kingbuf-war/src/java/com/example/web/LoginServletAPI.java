@@ -16,15 +16,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/admin/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/api/admin/login")
+public class LoginServletAPI extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     @EJB
     private ReservationService reservationService;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Boolean isAdmin = (Boolean) session.getAttribute("admin");
@@ -33,8 +33,18 @@ public class LoginServlet extends HttpServlet {
             isAdmin = false;
         }
 
-        request.setAttribute("isAdmin", isAdmin);
-        request.getRequestDispatcher("/WEB-INF/admin/login/login-page.jsp")
-                .forward(request, response);
+        // Tạo đối tượng JSON phản hồi
+        Map<String, Object> jsonResponse = new HashMap<>();
+        jsonResponse.put("message", "Đăng nhập thành công");
+        jsonResponse.put("admin", isAdmin);
+
+        // Thiết lập response là JSON
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // Ghi JSON vào response
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(response.getWriter(), jsonResponse);
     }
+    
 }

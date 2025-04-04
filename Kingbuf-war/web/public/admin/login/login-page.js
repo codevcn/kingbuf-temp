@@ -44,7 +44,7 @@ const loginAdmin = (e) => {
          .login(formData)
          .then(() => {
             toaster.success("Đăng nhập thành công.","",()=>{
-               window.location.href = "/admin/all-bookings/"
+               window.location.href = "/Kingbuf-war/admin/all-bookings"
             })
          })
          .catch((error) => {

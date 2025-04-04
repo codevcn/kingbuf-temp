@@ -1,7 +1,9 @@
 package com.example.web;
 
+import com.example.dto.Booking;
 import com.example.dto.ErrorResponse;
 import com.example.dto.ReservationRequest;
+import com.example.ejb.BookingHistoryService;
 import com.example.ejb.ReservationService;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 @WebServlet("/booking-history")
 public class BookingHistoryServlet extends HttpServlet {
@@ -21,6 +31,8 @@ public class BookingHistoryServlet extends HttpServlet {
 
     @EJB
     private ReservationService reservationService;
+    @EJB
+    private BookingHistoryService bookingHistoryService;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,44 +43,20 @@ public class BookingHistoryServlet extends HttpServlet {
             isAdmin = false;
         }
 
-        request.setAttribute("isAdmin", isAdmin);
-        request.getRequestDispatcher("/WEB-INF/bookings-history/bookings-history-page.jsp")
-                .forward(request, response);
-    }
-
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        StringBuilder jsonBody = new StringBuilder();
-        String line;
-        try (BufferedReader reader = request.getReader()) {
-            while ((line = reader.readLine()) != null) {
-                jsonBody.append(line);
-                System.out.print(line);
-            }
-            ObjectMapper objectMapper = new ObjectMapper();
-            System.out.print(">>> 1");
-            System.out.print(jsonBody.toString());
-            ReservationRequest reservationRequest = objectMapper.readValue(jsonBody.toString(), ReservationRequest.class);
-            System.out.print(">>> 2");
-            System.out.print(reservationRequest);
-            Object result = this.reservationService.reserve(reservationRequest);
-
-            // Kiểm tra kết quả trả về
-            if (result instanceof ErrorResponse) {
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
-                response.getWriter().write("{\"message\": " + ((ErrorResponse) result).getMessage());
-            }
-
-            // Trả về thành công
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"message\": \"success\"}");
+        try {
+            List<Booking> bookings = this.bookingHistoryService.getReservationsByUserInfo();
+            request.setAttribute("isAdmin", isAdmin);
+            request.setAttribute("bookings", bookings);
+            request.getRequestDispatcher("/WEB-INF/bookings-history/bookings-history-page.jsp")
+                    .forward(request, response);
         } catch (Exception e) {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
+            request.setAttribute("isAdmin", isAdmin);
+            request.setAttribute("bookings", new ArrayList());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
-            response.getWriter().write("{\"message\": " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/bookings-history/bookings-history-page.jsp")
+                    .forward(request, response);
         }
+
     }
+
 }

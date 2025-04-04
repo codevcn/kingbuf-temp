@@ -25,7 +25,7 @@
             </thead>
             <tbody>
                 <c:forEach var="table" items="${tables}">
-                    <c:set var="tableJSON" value="${table.toJson()}" />
+                    <c:set var="tableJSON" value="${table.toStringJSON()}" />
                     <tr class="${table.status == 'Maintenance' ? 'maintained' : ''}">
                         <td>${table.tableNumber}</td>
                         <td>${table.capacity}</td>
